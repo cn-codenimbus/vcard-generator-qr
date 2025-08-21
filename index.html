@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>vCard Generator + QR</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f172a; /* slate-900 */
+      --card:#111827ee; /* gray-900 */
+      --muted:#94a3b8; /* slate-400 */
+      --fg:#e5e7eb; /* gray-200 */
+      --acc:#22d3ee; /* cyan-400 */
+      --acc2:#a78bfa; /* violet-400 */
+      --ring:#334155; /* slate-700 */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(1200px 800px at 80% -20%, #312e81 0%, transparent 55%),linear-gradient(180deg,#0b1224 0%, #0f172a 100%);color:var(--fg)}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    header{display:flex;gap:14px;align-items:center;margin-bottom:20px}
+    .logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--acc),var(--acc2));box-shadow:0 8px 30px #22d3ee33}
+    h1{font-size:1.4rem;margin:0}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    @media (max-width: 900px){.grid{grid-template-columns:1fr}}
+    .card{background:var(--card);border:1px solid var(--ring);border-radius:18px;box-shadow:0 10px 40px #0006}
+    .card h2{margin:0 0 12px 0;font-size:1rem}
+    .card .inner{padding:18px}
+    label{display:block;font-size:0.9rem;color:var(--muted);margin-bottom:6px}
+    input,select,textarea{width:100%;padding:12px 14px;border:1px solid var(--ring);background:#0b1220;color:var(--fg);border-radius:12px;outline:none}
+    input:focus,select:focus,textarea:focus{border-color:var(--acc);box-shadow:0 0 0 4px #22d3ee22}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .btnbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    button{appearance:none;border:none;padding:12px 16px;border-radius:12px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#0a0a0a;font-weight:700;cursor:pointer}
+    button.secondary{background:#101828;border:1px solid var(--ring);color:var(--fg)}
+    button.ghost{background:transparent;border:1px dashed var(--ring);color:var(--muted)}
+    .muted{color:var(--muted);font-size:0.85rem}
+    .pre{white-space:pre-wrap;background:#0b1220;border:1px dashed var(--ring);border-radius:12px;padding:12px;min-height:150px}
+    .qrbox{display:flex;align-items:center;justify-content:center;min-height:280px;background:#0b1220;border:1px dashed var(--ring);border-radius:12px}
+    .tag{display:inline-flex;align-items:center;gap:8px;background:#0b1220;border:1px solid var(--ring);border-radius:999px;padding:8px 12px;font-size:0.85rem;color:var(--muted)}
+    .tag input,.tag select{margin:0}
+    .footer{margin-top:10px;color:var(--muted);font-size:0.8rem}
+    .warn{color:#fca5a5}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo"></div>
+      <div>
+        <h1>vCard Generator + QR</h1>
+        <div class="muted">Gib deine Kontaktdaten ein → vCard downloaden → QR scannen.</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Eingabe -->
+      <section class="card">
+        <div class="inner">
+          <h2>Eingabemaske</h2>
+          <div class="row">
+            <div>
+              <label>Vorname</label>
+              <input id="firstName" placeholder="Max" />
+            </div>
+            <div>
+              <label>Nachname</label>
+              <input id="lastName" placeholder="Mustermann" />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label>Firma (ORG)</label>
+              <input id="org" placeholder="Beispiel GmbH" />
+            </div>
+            <div>
+              <label>Position (TITLE)</label>
+              <input id="title" placeholder="Entwickler" />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label>Mobil (CELL)</label>
+              <input id="telCell" placeholder="+49 170 1234567" />
+            </div>
+            <div>
+              <label>Telefon (WORK)</label>
+              <input id="telWork" placeholder="+49 361 123456" />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label>E-Mail (WORK)</label>
+              <input id="email" placeholder="max@example.com" />
+            </div>
+            <div>
+              <label>Website (URL)</label>
+              <input id="url" placeholder="https://example.com" />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label>Straße</label>
+              <input id="street" placeholder="Musterstraße 1" />
+            </div>
+            <div>
+              <label>PLZ</label>
+              <input id="zip" placeholder="99084" />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label>Stadt</label>
+              <input id="city" placeholder="Erfurt" />
+            </div>
+            <div>
+              <label>Bundesland/Region</label>
+              <input id="state" placeholder="TH" />
+            </div>
+          </div>
+          <div>
+            <label>Land</label>
+            <input id="country" placeholder="Deutschland" />
+          </div>
+          <div>
+            <label>Notiz</label>
+            <textarea id="note" rows="3" placeholder="Freitext, z. B. Sprechzeiten"></textarea>
+          </div>
+
+          <div class="btnbar">
+            <span class="tag">Format:
+              <select id="format">
+                <option value="v3">vCard 3.0</option>
+                <option value="v4">vCard 4.0</option>
+                <option value="mecard">MECARD</option>
+              </select>
+            </span>
+            <span class="tag">QR ECC:
+              <select id="ecl">
+                <option value="M" selected>M</option>
+                <option value="L">L</option>
+                <option value="Q">Q</option>
+                <option value="H">H</option>
+              </select>
+            </span>
+            <span class="tag">Größe:
+              <select id="size">
+                <option value="256" selected>256 px</option>
+                <option value="320">320 px</option>
+                <option value="384">384 px</option>
+              </select>
+            </span>
+            <button id="makeBtn">Erzeugen</button>
+            <button class="secondary" id="dlBtn" disabled>Download</button>
+            <button class="secondary" id="copyBtn" disabled>Kopieren</button>
+          </div>
+          <p id="libStatus" class="muted">QR-Engine wird geladen…</p>
+        </div>
+      </section>
+
+      <!-- QR & Vorschau -->
+      <section class="card">
+        <div class="inner">
+          <h2>QR-Code & Vorschau</h2>
+          <div class="qrbox" id="qr"></div>
+          <div class="btnbar">
+            <button class="secondary" id="savePngBtn" disabled>QR als PNG speichern</button>
+            <button class="ghost" id="resetBtn">Zurücksetzen</button>
+          </div>
+          <p class="muted">Hinweis: MECARD wird von vielen Kamera-Apps am zuverlässigsten erkannt. Für .vcf-Download vCard 3.0/4.0 nutzen.</p>
+          <h3 style="margin-top:18px;font-size:0.95rem">Vorschau</h3>
+          <div class="pre" id="preview">Noch nichts generiert…</div>
+          <div class="footer">UTF‑8, CRLF. Bei Problemen mit Umlauten: vCard 4.0 oder MECARD wählen.</div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+<script>
+  // --- QR LIB LOADER (ohne feste CDN-Abhängigkeit) ---
+  const LIBS = [
+    './qrcode.min.js',
+    'https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js',
+    'https://unpkg.com/qrcode@1.5.4/build/qrcode.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js' // Fallback (anderes API)
+  ];
+
+  let QR_IMPL = null; // 'node-qrcode' | 'qrcodejs'
+  function detectImpl(){
+    if(window.QRCode && typeof QRCode.toCanvas === 'function') return 'node-qrcode';
+    if(window.QRCode && QRCode.CorrectLevel) return 'qrcodejs';
+    return null;
+  }
+  function loadScript(src){
+    return new Promise((resolve,reject)=>{
+      const s = document.createElement('script');
+      s.src = src; s.async = true; s.onload = ()=>resolve(src); s.onerror = ()=>reject(new Error('Load failed: '+src));
+      document.head.appendChild(s);
+    });
+  }
+  async function ensureQR(){
+    const status = document.getElementById('libStatus');
+    for(const src of LIBS){
+      try{
+        await loadScript(src);
+        const impl = detectImpl();
+        if(impl){ QR_IMPL = impl; status.textContent = 'QR-Engine: ' + impl + (src.startsWith('.') ? ' (lokal)' : ''); return; }
+      }catch(_e){ /* try next */ }
+    }
+    QR_IMPL = null; status.innerHTML = '<span class="warn">Keine QR-Library geladen. Lege <code>qrcode.min.js</code> lokal ab oder erlaube einen der CDNs.</span>';
+  }
+
+  // Debounce
+  const debounce = (fn, ms=300) => { let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); } };
+
+  // Escape für vCard
+  function escV(v=''){
+    return String(v).normalize('NFC')
+      .replace(/\\/g, '\\\\')
+      .replace(/\n/g, '\\n')
+      .replace(/,/g, '\\,')
+      .replace(/;/g, '\\;');
+  }
+  // Escape für MECARD
+  function escM(v=''){
+    return String(v).normalize('NFC')
+      .replace(/\\/g, '\\\\')
+      .replace(/;/g, '\\;')
+      .replace(/:/g, '\\:')
+      .replace(/,/g, '\\,')
+      .replace(/\n/g, ' ');
+  }
+
+  function buildPayload(){
+    const first = document.getElementById('firstName').value.trim();
+    const last  = document.getElementById('lastName').value.trim();
+    const org   = document.getElementById('org').value.trim();
+    const title = document.getElementById('title').value.trim();
+    const telC  = document.getElementById('telCell').value.trim();
+    const telW  = document.getElementById('telWork').value.trim();
+    const mail  = document.getElementById('email').value.trim();
+    const url   = document.getElementById('url').value.trim();
+    const street= document.getElementById('street').value.trim();
+    const zip   = document.getElementById('zip').value.trim();
+    const city  = document.getElementById('city').value.trim();
+    const state = document.getElementById('state').value.trim();
+    const country = document.getElementById('country').value.trim();
+    const note  = document.getElementById('note').value.trim();
+    const fmt   = document.getElementById('format').value;
+
+    if(fmt === 'mecard'){
+      const name = [last, first].filter(Boolean).join(',');
+      const adr  = [street, zip, city, state, country].filter(Boolean).join(' ');
+      const parts = [
+        'MECARD:',
+        name ? 'N:' + escM(name) + ';' : '',
+        telC ? 'TEL:' + escM(telC) + ';' : '',
+        telW ? 'TEL:' + escM(telW) + ';' : '',
+        mail ? 'EMAIL:' + escM(mail) + ';' : '',
+        org  ? 'ORG:' + escM(org) + ';' : '',
+        title? 'TITLE:' + escM(title) + ';' : '',
+        adr  ? 'ADR:' + escM(adr) + ';' : '',
+        url  ? 'URL:' + escM(url) + ';' : '',
+        note ? 'NOTE:' + escM(note) + ';' : '',
+        ';'
+      ];
+      return parts.join('');
+    }
+
+    const useV4 = fmt === 'v4';
+    const L = [];
+    L.push('BEGIN:VCARD');
+    L.push('VERSION:' + (useV4 ? '4.0' : '3.0'));
+
+    const fn = [first, last].filter(Boolean).join(' ');
+    const ch = useV4 ? '' : ';CHARSET=UTF-8';
+
+    L.push('FN' + ch + ':' + escV(fn));
+    L.push('N' + ch + ':' + escV(last) + ';' + escV(first) + ';;;');
+    if(org)   L.push('ORG' + ch + ':' + escV(org));
+    if(title) L.push('TITLE' + ch + ':' + escV(title));
+    if(telC)  L.push('TEL;TYPE=' + (useV4 ? 'cell' : 'CELL') + ':' + escV(telC));
+    if(telW)  L.push('TEL;TYPE=' + (useV4 ? 'work,voice' : 'WORK') + ':' + escV(telW));
+    if(mail)  L.push('EMAIL;TYPE=' + (useV4 ? 'work' : 'WORK') + ':' + escV(mail));
+    if(url)   L.push('URL:' + escV(url));
+
+    if(street || city || state || zip || country){
+      const adr = ['','', escV(street), escV(city), escV(state), escV(zip), escV(country)].join(';');
+      L.push('ADR' + (useV4 ? ';TYPE=work' : ';CHARSET=UTF-8;TYPE=WORK') + ':' + adr);
+    }
+
+    if(note)  L.push('NOTE' + ch + ':' + escV(note));
+
+    L.push('END:VCARD');
+    return L.join('\r\n');
+  }
+
+  function toUTF8(str){
+    if(window.TextEncoder){
+      const b = new TextEncoder().encode(str); let s=''; for(const x of b) s += String.fromCharCode(x); return s;
+    }
+    return unescape(encodeURIComponent(str));
+  }
+
+  async function renderAll(){
+    const payload = buildPayload();
+    const ecl = document.getElementById('ecl').value;
+    const size = parseInt(document.getElementById('size').value,10);
+
+    // Vorschau
+    document.getElementById('preview').textContent = payload;
+
+    // Buttons aktivieren
+    document.getElementById('dlBtn').disabled = false;
+    document.getElementById('copyBtn').disabled = false;
+    document.getElementById('savePngBtn').disabled = false;
+
+    // QR rendern
+    const box = document.getElementById('qr');
+    box.innerHTML = '';
+
+    if(!QR_IMPL){
+      const warn = document.createElement('div');
+      warn.className = 'muted warn';
+      warn.innerHTML = 'Keine QR-Library verfügbar. Lege <code>qrcode.min.js</code> neben diese Datei oder erlaube CDN.';
+      box.appendChild(warn); return;
+    }
+
+    try{
+      if(QR_IMPL === 'node-qrcode'){
+        const canvas = document.createElement('canvas'); box.appendChild(canvas);
+        await QRCode.toCanvas(canvas, payload, { errorCorrectionLevel: ecl, margin: 1, width: size });
+      } else if(QR_IMPL === 'qrcodejs'){
+        const levelMap = {L:QRCode.CorrectLevel.L, M:QRCode.CorrectLevel.M, Q:QRCode.CorrectLevel.Q, H:QRCode.CorrectLevel.H};
+        new QRCode(box, { text: toUTF8(payload), width: size, height: size, correctLevel: levelMap[ecl] });
+      }
+    }catch(e){
+      const warn = document.createElement('div');
+      warn.className = 'muted warn';
+      warn.textContent = 'QR-Fehler: ' + (e && e.message ? e.message : e);
+      box.appendChild(warn);
+    }
+  }
+
+  const updateLive = debounce(renderAll, 250);
+
+  // Events
+  for(const id of ['firstName','lastName','org','title','telCell','telWork','email','url','street','zip','city','state','country','note','format','ecl','size']){
+    document.getElementById(id).addEventListener('input', updateLive);
+    if(['format','ecl','size'].includes(id)) document.getElementById(id).addEventListener('change', updateLive);
+  }
+
+  document.getElementById('makeBtn').addEventListener('click', (e)=>{ e.preventDefault(); renderAll(); });
+
+  document.getElementById('dlBtn').addEventListener('click', ()=>{
+    const payload = buildPayload();
+    const fmt = document.getElementById('format').value;
+    const isVCard = fmt !== 'mecard';
+    const blob = new Blob([payload], {type: isVCard ? 'text/vcard;charset=utf-8' : 'text/plain;charset=utf-8'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    const fn = (document.getElementById('firstName').value.trim() + '-' + document.getElementById('lastName').value.trim()).replace(/\s+/g,'-').replace(/[^\w\-]/g,'') || 'kontakt';
+    a.download = fn + (isVCard ? '.vcf' : '.txt');
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', async ()=>{
+    const payload = buildPayload();
+    try{ await navigator.clipboard.writeText(payload); alert('Text in die Zwischenablage kopiert.'); }
+    catch{ alert('Kopieren nicht erlaubt – bitte manuell markieren.'); }
+  });
+
+  document.getElementById('savePngBtn').addEventListener('click', ()=>{
+    const box = document.getElementById('qr');
+    const canvas = box.querySelector('canvas');
+    if(!canvas){ alert('Kein QR vorhanden.'); return; }
+    const dataUrl = canvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    const fn = (document.getElementById('firstName').value.trim() + '-' + document.getElementById('lastName').value.trim()).replace(/\s+/g,'-').replace(/[^\w\-]/g,'') || 'vcard-qr';
+    a.download = fn + '.png';
+    a.click();
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    for(const id of ['firstName','lastName','org','title','telCell','telWork','email','url','street','zip','city','state','country','note']){
+      document.getElementById(id).value = '';
+    }
+    document.getElementById('format').value = 'v3';
+    document.getElementById('ecl').value = 'M';
+    document.getElementById('size').value = '256';
+    document.getElementById('preview').textContent = 'Noch nichts generiert…';
+    document.getElementById('qr').innerHTML = '';
+    document.getElementById('dlBtn').disabled = true;
+    document.getElementById('copyBtn').disabled = true;
+    document.getElementById('savePngBtn').disabled = true;
+  });
+
+  // Init
+  (async ()=>{ await ensureQR(); })();
+</script>
+</body>
+</html>
+
