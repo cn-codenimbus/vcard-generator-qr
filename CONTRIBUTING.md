@@ -5,7 +5,7 @@ Vielen Dank für Ihr Interesse an diesem Projekt! Beiträge sind sehr willkommen
 ## 🚀 Schnellstart
 
 1. **Fork** das Repository
-2. **Clone** Ihren Fork: `git clone https://github.com/IHR_USERNAME/vcard-generator-qr.git`
+2. **Clone** Ihren Fork: `git clone https://github.com/IHR_USERNAME/V-Card-Generator_QR.git`
 3. **Branch** erstellen: `git checkout -b feature/amazing-feature`
 4. **Änderungen** committen: `git commit -m 'Add amazing feature'`
 5. **Push** zum Branch: `git push origin feature/amazing-feature`

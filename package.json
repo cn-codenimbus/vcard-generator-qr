@@ -29,12 +29,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cn-codenimbus/vcard-generator-qr.git"
+    "url": "https://github.com/cn-codenimbus/V-Card-Generator_QR.git"
   },
   "bugs": {
-    "url": "https://github.com/cn-codenimbus/vcard-generator-qr/issues"
+    "url": "https://github.com/cn-codenimbus/V-Card-Generator_QR/issues"
   },
-  "homepage": "https://github.com/cn-codenimbus/vcard-generator-qr#readme",
+  "homepage": "https://github.com/cn-codenimbus/V-Card-Generator_QR#readme",
   "devDependencies": {
     "live-server": "^1.2.2",
     "serve": "^14.2.1"

@@ -13,7 +13,7 @@ Ein moderner, browserbasierter Generator für vCard-Dateien mit integriertem QR-
 
 ## 🚀 Live Demo
 
-[Demo ansehen](https://cn-codenimbus.github.io/vcard-generator-qr/)
+[Demo ansehen](https://cn-codenimbus.github.io/V-Card-Generator_QR/)
 
 ## 📋 Verwendung
 
@@ -28,7 +28,7 @@ Ein moderner, browserbasierter Generator für vCard-Dateien mit integriertem QR-
 
 1. Repository klonen:
 ```bash
-git clone https://github.com/cn-codenimbus/vcard-generator-qr.git
+git clone https://github.com/cn-codenimbus/V-Card-Generator_QR.git
 cd vcard-generator-qr
 ```
 
@@ -122,8 +122,8 @@ Beiträge sind willkommen! Bitte:
 ## 📞 Support
 
 Bei Fragen oder Problemen:
-- [Issue erstellen](https://github.com/cn-codenimbus/vcard-generator-qr/issues)
-- [Wiki durchsuchen](https://github.com/cn-codenimbus/vcard-generator-qr/wiki)
+- [Issue erstellen](https://github.com/cn-codenimbus/V-Card-Generator_QR/issues)
+- [Wiki durchsuchen](https://github.com/cn-codenimbus/V-Card-Generator_QR/wiki)
 
 ## 🙏 Danksagungen
 
