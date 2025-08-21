@@ -13,7 +13,7 @@ und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 - Progressive Web App (PWA) Support
 - Lokalisierung (mehrsprachig)
 
-## [1.0.0] - 2024-01-XX
+## [1.0.0] - 2025-01-XX
 
 ### Hinzugefügt
 - Vollständige vCard-Unterstützung (vCard 3.0, vCard 4.0, MECARD)
