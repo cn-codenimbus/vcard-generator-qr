@@ -3,8 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -14,37 +13,28 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm install
-      
     - name: Download QR Library
       run: |
         curl -o qrcode.min.js https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js
         
-    - name: Test build
+    - name: Verify files
       run: |
-        # Prüfe ob QR Library vorhanden
-        if [ ! -f "qrcode.min.js" ]; then
-          echo "❌ QR Library nicht gefunden"
-          exit 1
-        fi
+        echo "📁 Checking project files..."
+        ls -la
         
-        # Prüfe ob index.html vorhanden
         if [ ! -f "index.html" ]; then
-          echo "❌ index.html nicht gefunden"
+          echo "❌ index.html not found"
           exit 1
         fi
         
-        echo "✅ Build-Test erfolgreich"
+        if [ ! -f "qrcode.min.js" ]; then
+          echo "❌ qrcode.min.js not found"
+          exit 1
+        fi
+        
+        echo "✅ All files present"
         
     - name: Deploy to GitHub Pages
-      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
