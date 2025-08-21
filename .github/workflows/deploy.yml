@@ -21,7 +21,7 @@ jobs:
         cache: 'npm'
         
     - name: Install dependencies
-      run: npm ci
+      run: npm install
       
     - name: Download QR Library
       run: |
@@ -29,12 +29,15 @@ jobs:
         
     - name: Test build
       run: |
-        # Validiere HTML
-        npx html-validate index.html || true
-        
         # Prüfe ob QR Library vorhanden
         if [ ! -f "qrcode.min.js" ]; then
           echo "❌ QR Library nicht gefunden"
+          exit 1
+        fi
+        
+        # Prüfe ob index.html vorhanden
+        if [ ! -f "index.html" ]; then
+          echo "❌ index.html nicht gefunden"
           exit 1
         fi
         

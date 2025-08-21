@@ -1,0 +1,43 @@
+name: Deploy to GitHub Pages (Simple)
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Download QR Library
+      run: |
+        curl -o qrcode.min.js https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js
+        
+    - name: Verify files
+      run: |
+        echo "📁 Checking project files..."
+        ls -la
+        
+        if [ ! -f "index.html" ]; then
+          echo "❌ index.html not found"
+          exit 1
+        fi
+        
+        if [ ! -f "qrcode.min.js" ]; then
+          echo "❌ qrcode.min.js not found"
+          exit 1
+        fi
+        
+        echo "✅ All files present"
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: .
+        publish_branch: gh-pages
+        force_orphan: true 
