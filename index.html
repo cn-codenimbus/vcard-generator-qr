@@ -152,6 +152,10 @@
                 <option value="384">384 px</option>
               </select>
             </span>
+            <span class="tag">
+              <input type="checkbox" id="invert" style="width: auto; margin: 0 8px 0 0;">
+              <label for="invert" style="display: inline; margin: 0;">Invertiert</label>
+            </span>
             <button id="makeBtn">Erzeugen</button>
             <button class="secondary" id="dlBtn" disabled>Download</button>
             <button class="secondary" id="copyBtn" disabled>Kopieren</button>
@@ -308,6 +312,7 @@
     const payload = buildPayload();
     const ecl = document.getElementById('ecl').value;
     const size = parseInt(document.getElementById('size').value,10);
+    const invert = document.getElementById('invert').checked;
 
     // Vorschau
     document.getElementById('preview').textContent = payload;
@@ -330,11 +335,15 @@
 
     try{
       if(QR_IMPL === 'node-qrcode'){
-        const canvas = document.createElement('canvas'); box.appendChild(canvas);
-        await QRCode.toCanvas(canvas, payload, { errorCorrectionLevel: ecl, margin: 1, width: size });
+        const canvas = document.createElement('canvas'); 
+        canvas.width = size; canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, size, size); // Transparenten Hintergrund erstellen
+        box.appendChild(canvas);
+        await QRCode.toCanvas(canvas, payload, { errorCorrectionLevel: ecl, margin: 1, width: size, color: { dark: invert ? '#FFFFFF' : '#000000', light: '#00000000' } });
       } else if(QR_IMPL === 'qrcodejs'){
         const levelMap = {L:QRCode.CorrectLevel.L, M:QRCode.CorrectLevel.M, Q:QRCode.CorrectLevel.Q, H:QRCode.CorrectLevel.H};
-        new QRCode(box, { text: toUTF8(payload), width: size, height: size, correctLevel: levelMap[ecl] });
+        new QRCode(box, { text: toUTF8(payload), width: size, height: size, correctLevel: levelMap[ecl], colorDark: invert ? '#FFFFFF' : '#000000', colorLight: '#00000000' });
       }
     }catch(e){
       const warn = document.createElement('div');
@@ -351,6 +360,7 @@
     document.getElementById(id).addEventListener('input', updateLive);
     if(['format','ecl','size'].includes(id)) document.getElementById(id).addEventListener('change', updateLive);
   }
+  document.getElementById('invert').addEventListener('change', updateLive);
 
   document.getElementById('makeBtn').addEventListener('click', (e)=>{ e.preventDefault(); renderAll(); });
 
@@ -392,6 +402,7 @@
     document.getElementById('format').value = 'v3';
     document.getElementById('ecl').value = 'M';
     document.getElementById('size').value = '256';
+    document.getElementById('invert').checked = false;
     document.getElementById('preview').textContent = 'Noch nichts generiert…';
     document.getElementById('qr').innerHTML = '';
     document.getElementById('dlBtn').disabled = true;
