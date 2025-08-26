@@ -1,0 +1,50 @@
+{
+  "name": "vcard-generator-qr",
+  "version": "1.0.0",
+  "description": "Ein moderner, browserbasierter Generator für vCard-Dateien mit integriertem QR-Code",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000 || python -m http.server 8000 || npx serve .",
+    "dev": "npx live-server --port=8000",
+    "build": "echo 'Kein Build-Prozess erforderlich - statische HTML-Datei'",
+    "test": "echo 'Keine Tests konfiguriert'",
+    "lint": "echo 'Kein Linter konfiguriert'"
+  },
+  "keywords": [
+    "vcard",
+    "qr-code",
+    "contact",
+    "business-card",
+    "digital-card",
+    "generator",
+    "html",
+    "javascript",
+    "css"
+  ],
+  "author": {
+    "name": "Sebastian Mai - Codenimbus",
+    "email": "sebastian@codenimbus.de",
+    "url": "https://github.com/cn-codenimbus"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cn-codenimbus/V-Card-Generator_QR.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cn-codenimbus/V-Card-Generator_QR/issues"
+  },
+  "homepage": "https://github.com/cn-codenimbus/V-Card-Generator_QR#readme",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+} 
